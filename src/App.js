@@ -1,0 +1,71 @@
+import React, { Component } from "react";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
+import Footer from "./components/footer/footer";
+import Header from "./components/header";
+import Login from "./components/login/login";
+import Menu from "./components/menu/menu";
+import Register from "./components/register/register";
+import Stock from "./components/stock/stock";
+import { server, YES } from "./constants";
+import { setApp } from "./actions/app.action";
+import { connect } from "react-redux";
+
+const isLoggedIn = () => {
+  return localStorage.getItem(server.LOGIN_PASSED) == YES;
+};
+
+// Protected Route
+const SecuredRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      isLoggedIn() === true ? (
+        <Component {...props} />
+      ) : (
+        <Redirect to="/login" />
+      )
+    }
+  />
+);
+
+class App extends Component {
+  redirectToLogin = () => {
+    return <Redirect to="/login" />;
+  };
+
+  componentDidMount() {
+    this.props.setApp(this);
+  }
+
+  render() {
+    return (
+      <Router>
+        <div>
+          {isLoggedIn() && <Header />}
+          {isLoggedIn() && <Menu />}
+          <Switch>
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+            <SecuredRoute path="/stock" component={Stock} />
+            <Route exact={true} path="/" component={this.redirectToLogin} />
+            <Route exact={true} path="*" component={this.redirectToLogin} />
+          </Switch>
+          {isLoggedIn() && <Footer />}
+        </div>
+      </Router>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({});
+
+const mapDispatchToProps = {
+  setApp,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
