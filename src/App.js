@@ -23,7 +23,7 @@ const isLoggedIn = () => {
 const SecuredRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
-    render={props =>
+    render={(props) =>
       isLoggedIn() === true ? (
         <Component {...props} />
       ) : (
