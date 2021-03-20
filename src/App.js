@@ -11,9 +11,13 @@ import Login from "./components/login/login";
 import Menu from "./components/menu/menu";
 import Register from "./components/register/register";
 import Stock from "./components/stock/stock";
+import StockEdit from "./components/stockEdit";
+import StockCreate from "./components/stockCreate";
+import Report from "./components/report/report";
 import { server, YES } from "./constants";
 import { setApp } from "./actions/app.action";
 import { connect } from "react-redux";
+import "./App.css";
 
 const isLoggedIn = () => {
   return localStorage.getItem(server.LOGIN_PASSED) == YES;
@@ -52,6 +56,9 @@ class App extends Component {
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
             <SecuredRoute path="/stock" component={Stock} />
+            <SecuredRoute path="/stock-create" component={StockCreate} />
+            <SecuredRoute path="/stock-edit/:id" component={StockEdit} />
+            <SecuredRoute path="/report" component={Report} />
             <Route exact={true} path="/" component={this.redirectToLogin} />
             <Route exact={true} path="*" component={this.redirectToLogin} />
           </Switch>
