@@ -26,8 +26,10 @@ class Stock extends Component {
   ];
 
   createRows = () => {
+    console.log("createRows")
     const { result, isFetching } = this.props.stockReducer;
-    if (result != null) {
+  
+    if (result != null && result!="ok") {
       return result.map((item) => (
         <tr key={item.id}>
           <td>
