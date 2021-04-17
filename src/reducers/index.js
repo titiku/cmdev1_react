@@ -4,4 +4,9 @@ import loginReducer from "./login.reducer";
 import appReducer from "./app.reducer";
 import stockReducer from "./stock.reducer";
 
-export default combineReducers({ registerReducer, loginReducer, appReducer, stockReducer });
+export default combineReducers({
+  registerReducer,
+  loginReducer,
+  appReducer,
+  stockReducer,
+});

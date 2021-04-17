@@ -98,3 +98,22 @@ export const addProduce = (history,formData) => {
     }
   };
 };
+
+export const updateProduce = (history, formData) => {
+  return async (dispatch) => {
+    dispatch(setStateStockToFetching());
+    try {
+      let result = await httpClient.put(server.PRODUCT_URL, formData);
+      if (result.data.result == OK) {
+        //success
+        dispatch(setStateStockToSuccess(result.data.result));
+        history.goBack();
+      } else {
+        //failed
+        dispatch(setStateStockToFailed());
+      }
+    } catch (e) {
+      dispatch(setStateStockToFailed());
+    }
+  };
+};

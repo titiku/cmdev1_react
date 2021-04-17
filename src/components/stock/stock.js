@@ -26,79 +26,84 @@ class Stock extends Component {
   ];
 
   createRows = () => {
-    console.log("createRows")
-    const { result, isFetching } = this.props.stockReducer;
-  
-    if (result != null && result!="ok") {
-      return result.map((item) => (
-        <tr key={item.id}>
-          <td>
-            <Moment format="DD/MM/YYYY">{item.createdAt}</Moment>
-          </td>
+    try {
+      const { result, isFetching } = this.props.stockReducer;
 
-          <td>
-            <span style={{ marginRight: 10, minHe: 100 }}>
-              <img
-                src={`${imageUrl}/images/${item.image}?dummy=${Math.random()}`}
-                style={{ maxWidth: 50 }}
+      if (result != null && result != "ok") {
+        return result.map((item) => (
+          <tr key={item.id}>
+            <td>
+              <Moment format="DD/MM/YYYY">{item.createdAt}</Moment>
+            </td>
+
+            <td>
+              <span style={{ marginRight: 10, minHe: 100 }}>
+                <img
+                  src={`${imageUrl}/images/${
+                    item.image
+                  }?dummy=${Math.random()}`}
+                  style={{ maxWidth: 50 }}
+                />
+              </span>
+              {item.name}
+            </td>
+            <td>
+              <NumberFormat
+                value={item.price}
+                displayType={"text"}
+                thousandSeparator={true}
+                decimalScale={2}
+                fixedDecimalScale={true}
+                prefix={"฿"}
               />
-            </span>
-            {item.name}
-          </td>
-          <td>
-            <NumberFormat
-              value={item.price}
-              displayType={"text"}
-              thousandSeparator={true}
-              decimalScale={2}
-              fixedDecimalScale={true}
-              prefix={"฿"}
-            />
-          </td>
-          <td>
-            <NumberFormat
-              value={item.stock}
-              displayType={"text"}
-              thousandSeparator={true}
-              decimalScale={0}
-              fixedDecimalScale={true}
-              suffix={" pcs"}
-            />
-          </td>
-          <td>{item.id}</td>
-          <td style={{ textAlign: "center" }}>
-            <button
-              onClick={() => this.props.history.push(`/stock-edit/${item.id}`)}
-              type="button"
-              className="btn btn-info"
-            >
-              แก้ไข
-            </button>
-            <span style={{ color: "grey" }}> | </span>
-            <button
-              onClick={() => {
-                MySwal.fire({
-                  title: "Are you sure to delete?",
-                  text: "You won't be able to revert this!",
-                  type: "warning",
-                  showCancelButton: true,
-                  confirmButtonText: "Yes, delete it!",
-                  cancelButtonText: "No, cancel!",
-                }).then((result) => {
-                  if (result.value) {
-                    this.props.deleteProduct(item.id);
-                  }
-                });
-              }}
-              type="button"
-              className="btn btn-danger"
-            >
-              ลบ
-            </button>
-          </td>
-        </tr>
-      ));
-    }
+            </td>
+            <td>
+              <NumberFormat
+                value={item.stock}
+                displayType={"text"}
+                thousandSeparator={true}
+                decimalScale={0}
+                fixedDecimalScale={true}
+                suffix={" pcs"}
+              />
+            </td>
+            <td>{item.id}</td>
+            <td style={{ textAlign: "center" }}>
+              <button
+                onClick={() =>
+                  this.props.history.push(`/stock-edit/${item.id}`)
+                }
+                type="button"
+                className="btn btn-info"
+              >
+                แก้ไข
+              </button>
+              <span style={{ color: "grey" }}> | </span>
+              <button
+                onClick={() => {
+                  MySwal.fire({
+                    title: "Are you sure to delete?",
+                    text: "You won't be able to revert this!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, delete it!",
+                    cancelButtonText: "No, cancel!",
+                  }).then((result) => {
+                    if (result.value) {
+                      this.props.deleteProduct(item.id);
+                    }
+                  });
+                }}
+                type="button"
+                className="btn btn-danger"
+              >
+                ลบ
+              </button>
+            </td>
+          </tr>
+        ));
+      }
+    } catch (e) {}
   };
 
   onChange = (e) => {
